@@ -18,6 +18,20 @@ app.get("/leads", (req, res) => {
     res.json(leads);
 });
 
+app.get("/leads/:id", (req, res) => {
+    const id = Number(req.params.id);
+
+    const lead = leads.find((lead) => lead.id === id);
+
+    if (!lead) {
+        return res.status(404).json({
+            erro: "Lead não encontrado"
+        });
+    }
+
+    res.json(lead);
+});
+
 app.post("/leads", (req, res) => {
     const { nome, email } = req.body;
 
@@ -30,7 +44,8 @@ app.post("/leads", (req, res) => {
     const novoLead = {
         id: leads.length + 1,
         nome,
-        email
+        email,
+        status: "novo"
     };
 
     leads.push(novoLead);
